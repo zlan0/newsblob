@@ -1,0 +1,27 @@
+# GhanaFront PocketBase Database — deploy to Fly.io (free)
+# Run: flyctl launch --no-deploy && flyctl volumes create pb_data --size 1 && flyctl deploy
+
+app = "ghanafront-db"
+primary_region = "jnb"  # Johannesburg — closest to Ghana
+
+[build]
+  image = "ghcr.io/muchobien/pocketbase:latest"
+
+[env]
+  PB_ENCRYPTION_KEY = "change-me-32-char-encryption-key!!"
+
+[mounts]
+  source = "pb_data"
+  destination = "/pb_data"
+
+[http_service]
+  internal_port = 8090
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
